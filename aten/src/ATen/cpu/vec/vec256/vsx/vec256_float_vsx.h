@@ -444,6 +444,7 @@ class Vectorized<float> {
   DEFINE_MEMBER_OP(operator|, float, vec_or)
   DEFINE_MEMBER_OP(operator^, float, vec_xor)
   DEFINE_MEMBER_TERNARY_OP(madd, float, vec_madd)
+  
 };
 
 template <>
@@ -455,7 +456,43 @@ template <>
 Vectorized<float> inline minimum(const Vectorized<float>& a, const Vectorized<float>& b) {
   return a.minimum(b);
 }
+#if 1
+template <>
+ Vectorized<float> C10_ALWAYS_INLINE operator+(const Vectorized<float>& a, const Vectorized<float>& b) {
+    return Vectorized<float>{vec_add(a.vec0(), b.vec0()), vec_add(a.vec1(), b.vec1())};
+  }
 
+template <>
+ Vectorized<float> C10_ALWAYS_INLINE operator-(const Vectorized<float>& a, const Vectorized<float>& b) {
+    return Vectorized<float>{vec_sub(a.vec0(), b.vec0()), vec_sub(a.vec1(), b.vec1())};
+  }
+
+template <>
+  Vectorized<float> C10_ALWAYS_INLINE operator*(const Vectorized<float>& a, const Vectorized<float>& b) {
+    return Vectorized<float>{vec_mul(a.vec0(), b.vec0()), vec_mul(a.vec1(), b.vec1())};
+  }
+
+template <>
+  Vectorized<float> C10_ALWAYS_INLINE operator/(const Vectorized<float>& a, const Vectorized<float>& b) {
+    return Vectorized<float>{vec_div(a.vec0(), b.vec0()), vec_div(a.vec1(), b.vec1())};
+  }
+
+template <>
+  Vectorized<float> C10_ALWAYS_INLINE operator&(const Vectorized<float>& a, const Vectorized<float>& b) {
+    return Vectorized<float>{vec_and(a.vec0(), b.vec0()), vec_and(a.vec1(), b.vec1())};
+  }
+
+template <>
+  Vectorized<float> C10_ALWAYS_INLINE operator|(const Vectorized<float>& a, const Vectorized<float>& b) {
+    return Vectorized<float>{vec_or(a.vec0(), b.vec0()), vec_or(a.vec1(), b.vec1())};
+  }
+
+template <>
+  Vectorized<float> C10_ALWAYS_INLINE operator^(const Vectorized<float>& a, const Vectorized<float>& b) {
+    return Vectorized<float>{vec_xor(a.vec0(), b.vec0()), vec_xor(a.vec1(), b.vec1())};
+  }
+
+#endif 
 } // namespace
 } // namespace vec
 } // namespace at
